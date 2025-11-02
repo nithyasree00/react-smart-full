@@ -36,7 +36,7 @@ app.use(express.static(frontendPath));
 
 // Use Router instead of app.get("*") (Express 5 syntax)
 const router = Router();
-router.all("/*", (req, res) => {
+router.all("*", (req, res) => {
   res.sendFile(path.resolve(frontendPath, "index.html"));
 });
 app.use(router);
