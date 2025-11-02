@@ -1,3 +1,4 @@
+import { Router } from "express";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -29,13 +30,16 @@ app.use("/api/inventory", inventoryRoutes);
 // ---------- Serve Frontend ----------
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const frontendPath = path.join(__dirname, "dist");
 
-// Serve the React Vite build folder
-app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(frontendPath));
 
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "dist", "index.html"));
+// Use Router instead of app.get("*") (Express 5 syntax)
+const router = Router();
+router.all("/*", (req, res) => {
+  res.sendFile(path.resolve(frontendPath, "index.html"));
 });
+app.use(router);
 // ---------- End Frontend ----------
 
 const PORT = process.env.PORT || 5000;
