@@ -30,11 +30,9 @@ app.use("/api/inventory", inventoryRoutes);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static frontend files
 app.use(express.static(path.join(__dirname, "dist")));
 
-// ✅ Express v5 compatible fallback route
-app.use((req, res) => {
+app.all("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "dist", "index.html"));
 });
 // ---------- End Frontend ----------
